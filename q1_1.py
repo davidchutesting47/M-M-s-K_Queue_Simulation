@@ -2,19 +2,20 @@ from MMSK.mathAnalysis import *
 from MMSK.simulation import *
 import matplotlib.pyplot as plt
 import math
-    
-lam = 2
-mu = 1.5
-k = 8
+
+lam = 2 # arrivals per hour
+mu = 1.5 # param of exponential distribution
+k = 8 # max number of customers (in system or in line?)
 x = []
 Ly = []
 simLy = []
 for i in range(2, 8):
-	x.append(i)
-	quSim = queueSim(lam, mu, i, k, 20000)
-	quSim.simRun()
-	simLy.append(quSim.avgWaitLen)
-	Ly.append(L_(lam, mu, i, k))
+	# i is number of servers
+    x.append(i)
+    quSim = queueSim(lam, mu, i, k, 20000)
+    quSim.simRun()
+    simLy.append(quSim.avgWaitLen)
+    Ly.append(L_(lam, mu, i, k))
 print('MATH:x = ', x, ', y = ', Ly)
 print('SIM :x = ', x, ', y = ', simLy)
 plt.plot(x, simLy, 'ro-', label='sim')
@@ -24,9 +25,9 @@ plt.xlabel('s')
 plt.ylabel('L')
 tempX = x
 for x, y in zip(x, Ly):
-	plt.text(x, y, '%.2f' % y, ha='center', va='bottom')
+    plt.text(x, y, '%.2f' % y, ha='center', va='bottom')
 
 for x, y in zip(tempX, simLy):
-	plt.text(x, y, '%.2f' % y, ha='center', va='bottom')
+    plt.text(x, y, '%.2f' % y, ha='center', va='bottom')
 plt.legend()
 plt.show()
