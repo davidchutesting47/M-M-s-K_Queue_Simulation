@@ -52,10 +52,12 @@ class queueSim:
 		self.completedNum = 0
 		self.servingNum = 0
 		self.previousTime = 0
+		self.numCustomersDropped = 0
 		#self.eventList.printList()
 		#print('\n')
 		
 	def simRun(self):
+		self.numCustomersDropped = 0
 		while(self.eventList.list):
 			temp = self.eventList.list.pop(0)
 			self.waitLenAcc += ((self.currentTime - self.previousTime) * (self.servingNum + self.waitQueue.qsize()))
@@ -85,6 +87,10 @@ class queueSim:
 				else:
 					if not self.waitQueue.full():
 						self.waitQueue.put(temp)
+					else:
+						# customer dropped
+						#print('Customer dropped at arrival time ', temp.arrivalTime)
+						self.numCustomersDropped += 1
 			#print('\n--waitQueueSize=', self.waitQueue.qsize(), 'servingNum=', self.servingNum)
 			#self.eventList.printList()
 		self.avgWaitTime = self.waitTimeAcc/self.completedNum
