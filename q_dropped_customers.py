@@ -3,48 +3,44 @@ from MMSK.simulation import *
 import matplotlib.pyplot as plt
 import math
 
-lam = 2  # arrivals per hour
-mu = 1.5  # param of exponential distribution. 1/mu is mean service time
-k = 8  # max number of customers (in system or in line?)
+lam = 1*1000  # arrivals per hour
+meanServiceTime = 20/60 # mean service time # TODO: there seems to be a bug where mu does not change the outcome
+mu = 1/meanServiceTime  # param of exponential distribution. 1/mu is mean service time
+#sList = range(1,8)
+sList = [i * 100 for i in range(1,31,2)] # num servers
+# k = 8  # max number of customers (in queue + being served by servers)
+waitQueueLen = 1 # set to at least 1 to avoid bug. replaces k
 x = []
-Ly = []
 simLy = []
-numCustomers = 20000
+simHours = 2
+numCustomers = lam * 2
 numCustomersDroppedPct = []
 
-# if lam <= 1/mu:
-#     serviceTime = 1/mu
-#     print(f'Service time is too long for arrival rate: Lambda {lam} <= 1/Mu {serviceTime}')
-#     print('Behavior is unstable.')
-#     quit()
+print(f'lam={lam}, meanServiceTime={meanServiceTime}, mu={mu}')
 
-for i in range(1, 8):
+if lam <= 1/mu:
+    serviceTime = 1/mu
+    print(f'Service time is too long for arrival rate: Lambda ({lam}) <= 1/Mu ({serviceTime})')
+    print('Queue will go to infinity.')
+    quit()
+
+for i in sList:
     # i is number of servers
     x.append(i)
+    k = i+waitQueueLen
     quSim = queueSim(lam, mu, i, k, numCustomers)
     quSim.simRun()
     simLy.append(quSim.avgWaitLen)
-    Ly.append(L_(lam, mu, i, k))
     numCustomersDroppedPct.append(quSim.numCustomersDropped / numCustomers)
-print('MATH:x = ', x, ', y = ', Ly)
-print('SIM :x = ', x, ', y = ', simLy)
+
+print('SIM :x = ', x, ', avgWaitLen = ', simLy)
 print('SIM2 :x = ', x, ', dropped = ', numCustomersDroppedPct)
 
-#plt.plot(x, simLy, 'ro-', label='sim')
-#plt.plot(x, Ly, 'g^-', label='math')
 plt.plot(x, numCustomersDroppedPct, 'bo-', label='pct. dropped')
 plt.title('')
 plt.xlabel('num servers')
 plt.ylabel('% customers dropped')
-tempX = x
-tempX2 = x
-# for x, y in zip(x, Ly):
-#     plt.text(x, y, '%.2f' % y, ha='center', va='bottom')
-#
-# for x, y in zip(tempX, simLy):
-#     plt.text(x, y, '%.2f' % y, ha='center', va='bottom')
-
-for x, y in zip(tempX2, numCustomersDroppedPct):
+for x, y in zip(x, numCustomersDroppedPct):
     plt.text(x, y, '%.4f' % y, ha='center', va='bottom')
 
 plt.legend()

@@ -42,6 +42,10 @@ class queueSim:
 		self.k = k
 		self.availableServer = s
 		self.customerNum = n
+		if k-s <= 0:
+			print(f'k ({k}) <= s ({s})')
+			print('TODO: fix bug')
+			quit()
 		self.waitQueue = queue.Queue(k-s)
 		self.eventList = simEventList(lam, mu, n)
 		self.currentTime = 0

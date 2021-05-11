@@ -11,9 +11,10 @@ Ly = []
 simLy = []
 numCustomers = 20000
 numCustomersDroppedPct = []
-for i in range(1, 8):
+for i in range(2, 8):
     # i is number of servers
     x.append(i)
+    k = i+1
     quSim = queueSim(lam, mu, i, k, numCustomers)
     quSim.simRun()
     simLy.append(quSim.avgWaitLen)
