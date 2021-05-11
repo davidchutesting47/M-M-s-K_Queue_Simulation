@@ -4,17 +4,20 @@ import matplotlib.pyplot as plt
 import math
 
 lam = 1*1000  # arrivals per hour
-meanServiceTime = 20/60 # mean service time # TODO: there seems to be a bug where mu does not change the outcome
+meanServiceTime = 15/60 # mean service time
 mu = 1/meanServiceTime  # param of exponential distribution. 1/mu is mean service time
 #sList = range(1,8)
-sList = [i * 100 for i in range(1,31,2)] # num servers
+sList = [i * 100 for i in range(1,6)] # num servers
 # k = 8  # max number of customers (in queue + being served by servers)
 waitQueueLen = 1 # set to at least 1 to avoid bug. replaces k
 x = []
 simLy = []
 simHours = 2
 numCustomers = lam * 2
+#numCustomers = 2000
 numCustomersDroppedPct = []
+
+print(np.random.exponential(1/lam)*60)
 
 print(f'lam={lam}, meanServiceTime={meanServiceTime}, mu={mu}')
 

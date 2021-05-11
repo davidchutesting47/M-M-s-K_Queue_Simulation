@@ -12,11 +12,11 @@ class customer:
 
 class simEventList:
 	def __init__(self, lam, mu, n = 0):
-		tempServiceTime = int(np.random.exponential(1/mu)*60)
+		tempServiceTime = np.random.exponential(1/mu)*60
 		self.list = [customer(0, tempServiceTime, 'arrival')]
 		for i in range(n-1):
-			tempServiceTime = int(np.random.exponential(1/mu)*60)
-			tempInterArrivalTime = int(np.random.exponential(1/lam)*60)
+			tempServiceTime = np.random.exponential(1/mu)*60
+			tempInterArrivalTime = np.random.exponential(1/lam)*60
 			self.list.append(customer(self.list[i].arrivalTime+tempInterArrivalTime, tempServiceTime, 'arrival'))
 	
 	def printList(self):
@@ -57,12 +57,12 @@ class queueSim:
 		self.servingNum = 0
 		self.previousTime = 0
 		self.numCustomersDropped = 0
-		#self.eventList.printList()
-		#print('\n')
+		# self.eventList.printList()
+		# print('\n')
 		
 	def simRun(self):
 		self.numCustomersDropped = 0
-		while(self.eventList.list):
+		while self.eventList.list:
 			temp = self.eventList.list.pop(0)
 			self.waitLenAcc += ((self.currentTime - self.previousTime) * (self.servingNum + self.waitQueue.qsize()))
 			self.waitQuLenAcc += ((self.currentTime - self.previousTime) * self.waitQueue.qsize())
