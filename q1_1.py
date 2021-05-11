@@ -3,14 +3,14 @@ from MMSK.simulation import *
 import matplotlib.pyplot as plt
 import math
 
-lam = 2 # arrivals per hour
-mu = 1.5 # param of exponential distribution
-k = 8 # max number of customers (in system or in line?)
+lam = 2  # arrivals per hour
+mu = 1.5  # param of exponential distribution
+k = 8  # max number of customers (in system or in line?)
 x = []
 Ly = []
 simLy = []
 for i in range(2, 8):
-	# i is number of servers
+    # i is number of servers
     x.append(i)
     quSim = queueSim(lam, mu, i, k, 20000)
     quSim.simRun()
